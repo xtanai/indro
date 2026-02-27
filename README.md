@@ -179,7 +179,7 @@ This is why the table marks Basler as **“Low” FPS (typical)** in a conservat
 Many depth-camera vendors specify accuracy as a **percentage of distance** (a common rule-of-thumb is ~1–2% of range, depending on model and conditions).
 For that reason, the mm-values shown here are presented as **realistic ranges**, not best-case lab numbers, and should be interpreted as “what you can typically expect” rather than guaranteed performance.
 
-### Leap Motion
+#### Leap Motion
 Leap Motion uses a dual-camera hardware setup; however, the system does not expose or process stereo data as a general-purpose stereo vision pipeline.
 
 
