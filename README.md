@@ -130,7 +130,8 @@ When combined properly, they complement each other — but they are not intercha
 | **Editor-oriented API**                      |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |      **🟢**     |
 | Open-source core                             |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢       |
 | Edge-side processing (on-device)             |         🟢         |       🟢     |        🟢         |    🔴     |      🔴      |       🟢      |        🟢       |
-| VPU on device                                |         🟢         |       🟢     |        🔴         |    🔴     |      🔴      |       🟢      |        🔴       |
+| “VPU” / dedicated vision accelerator         |         🟡         |       🔴     |        🔴         |    🔴     |      🔴      |       🟡      |        🔴       |
+| FPGA / hardware stereo pipeline              |         🔴         |       🟢     |        🔴         |    🔴     |      🟡      |       🔴      |        🔴       |
 | Linux-based edge device (on-board OS)        |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢       |
 | AI On-device accelerator support (NPU/GPU)   |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢**     |
 | Expandable hardware (add-ons / upgrades)     |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢       |
