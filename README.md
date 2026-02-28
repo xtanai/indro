@@ -139,10 +139,10 @@ When combined properly, they complement each other — but they are not intercha
 
 ## Footnotes
 
-* Manufacturer-stated operational ranges under ideal conditions.
+\* Manufacturer-stated operational ranges under ideal conditions.
 Actual performance depends on lighting, surface texture, calibration, and environmental conditions.
 
-** EdgeTrack is optimized for **high-precision operation in the near field (≤ ~1.2 m)** using homogeneous NIR flood illumination.
+\** EdgeTrack is optimized for **high-precision operation in the near field (≤ ~1.2 m)** using homogeneous NIR flood illumination.
 Extended ranges up to ~10 m are configuration-dependent and may require:
 
 * VCSEL dot-pattern projection (active stereo assist)
