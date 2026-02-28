@@ -157,10 +157,11 @@ For transparency, geometric performance relationships are documented separately 
 
 ## ⚙️ VPU vs CPU (Stereo Disparity)
 
-**VPU-based systems** shine when you want **efficient, ready-to-use dense depth** (e.g., 720p @ 30 FPS) with low host load.
-**CPU / RAW-first systems** shine when you need **maximum control**, **deterministic timing**, **ROI instead of full-frame**, and **multi-rig synchronization**.
+As described above, many classic stereo/depth cameras come with limitations - but they also have a clear advantage: an on-device VPU/ASIC can compute disparity very efficiently.
 
-That’s why EdgeTrack focuses on **CPU + RAW-first control**: my priority is **precise geometry, timing consistency, and modular multi-rig operation** — not “depth everywhere at any cost”.
+The Raspberry Pi 5 has a natural trade-off: it is not as efficient at full-frame dense disparity processing. However, EdgeTrack follows a different strategy: direct RAW access enables a fully controllable pipeline where ROI selection, disparity range tuning, and targeted (sparse/ROI) matching can dramatically reduce compute cost while improving determinism and reproducibility.
+
+Here is a quick comparison table:
 
 | Feature                                 | 🖥️ CPU (Pi 5) | 🖥️ CPU (Threadripper) | 📟 VPU (On-device depth) |
 |------------------------------------------|:-------------:|:----------------------:|:------------------------:|
