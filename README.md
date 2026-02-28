@@ -120,7 +120,7 @@ When combined properly, they complement each other — but they are not intercha
 | Feature / Focus                              | ZED 2i & RealSense |   Bumblebee   |   Leap Motion    | OptiTrack | Basler Stereo |    Orbbec     |     EdgeTrack    |
 |----------------------------------------------|:------------------:|:-------------:|:----------------:|:---------:|:-------------:|:-------------:|:----------------:|
 | Primary use case                             | Depth sensing / XR | Stereo vision | XR hand tracking |   MoCap   | Stereo vision | Depth sensing | Editor authoring |
-| Capture FPS (typical)                        |         Mid        |      Mid      |       High       | Very High |      Low      |      Mid      |    Very High*    |
+| Capture FPS (typical)                        |         Mid        |      Mid      |       High       |    High   |      Low      |      Mid     |      High*       |
 | Stereo / multi-camera                        |         🟢         |       🟢     |        🟡         |    🟢     |      🟢      |       🟢      |        🟢       |
 | RAW10 or RAW12                               |         🔴         |       🟢     |        🔴         |    🟡     |      🟢      |       🔴      |        🟢       |
 | RAW10 ingest on the edge (CPU/GPU)           |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢       |
