@@ -194,7 +194,7 @@ For these reasons, the project deliberately avoids H.265-based pipelines and foc
 
 | Format                     |   Rating   | Comment                                                                                  |
 | -------------------------- | ---------- | ---------------------------------------------------------------------------------------- |
-| **MJPEG / JPEG**           | ⭐☆☆☆☆     | Only for preview/debug. Strong artifacts, variable bitrate, poor for precise 3D.         |
+| **MJPEG / H.265**          | ⭐☆☆☆☆     | Only for preview/debug. Strong artifacts, variable bitrate, poor for precise 3D.         |
 | **YUV / YUYV / NV12**      | ⭐⭐☆☆☆    | OK if you only use the **Y (luma)** channel. Extra bandwidth wasted on color info.       |
 | **RAW8 / Y8 (8-bit mono)** | ⭐⭐⭐☆☆   | Solid baseline. Lower dynamic range, but good enough with proper NIR illumination.       |
 | **RAW10**                  | ⭐⭐⭐⭐☆  | Very good: higher dynamic range, finer quantization, still manageable bandwidth.         |
