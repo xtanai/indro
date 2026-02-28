@@ -114,76 +114,44 @@ When combined properly, they complement each other — but they are not intercha
 
 ## Comparison of Available Hardware on the Market
 
-> Note: This comparison focuses on architectural capabilities and integration models.
-> Feature availability may vary by configuration and firmware.
+> **Note:** This comparison focuses on architectural design principles and system integration models.
+> Feature availability varies by firmware version, SDK access level, and configuration.
+> Specifications are summarized at a high level and may differ by exact model variant.
 
-| Feature / Focus                              | ZED 2i & RealSense |   Bumblebee   |   Leap Motion    | OptiTrack | Basler Stereo |    Orbbec     |     EdgeTrack    |
-|----------------------------------------------|:------------------:|:-------------:|:----------------:|:---------:|:-------------:|:-------------:|:----------------:|
-| Primary use case                             | Depth sensing / XR | Stereo vision | XR hand tracking |   MoCap   | Stereo vision | Depth sensing | Editor authoring |
-| Capture FPS (typical)                        |         Mid        |      Mid      |       High       |    High   |      Low      |      Mid     |      High*       |
-| Stereo / multi-camera                        |         🟢         |       🟢     |        🟡         |    🟢     |      🟢      |       🟢      |        🟢       |
-| RAW10 or RAW12                               |         🔴         |       🟢     |        🔴         |    🟡     |      🟢      |       🔴      |        🟢       |
-| RAW10 ingest on the edge (CPU/GPU)           |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢       |
-| Native multi-device fusion                   |         🔴         |       🔴     |        🔴         |    🟢     |      🔴      |       🔴      |        🟢       |
-| Phase-offset capture (TDM Module)            |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢       |
-| **Deterministic event layer**                |         🔴         |       🔴     |        🔴         |  **🟢**   |      🔴      |       🔴      |      **🟢**     |
-| **Editor-oriented API**                      |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |      **🟢**     |
-| Open-source core                             |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢       |
-| Edge-side processing (on-device)             |         🟢         |       🟢     |        🟢         |    🔴     |      🔴      |       🟢      |        🟢       |
-| “VPU” / dedicated vision accelerator         |         🟡         |       🔴     |        🔴         |    🔴     |      🔴      |       🟡      |        🔴       |
-| FPGA / hardware stereo pipeline              |         🔴         |       🟢     |        🔴         |    🔴     |      🟡      |       🔴      |        🔴       |
-| Linux-based edge device (on-board OS)        |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢       |
-| AI On-device accelerator support (NPU/GPU)   |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢**     |
-| Expandable hardware (add-ons / upgrades)     |         🔴         |       🔴     |        🔴         |    🔴     |      🔴      |       🔴      |        🟢       |
-| Depth range (typical)                        |      ~0.5–6 m      |    ~0.3–5 m  |     ~0.1–1 m      | ~0.2–20 m |  ~0.2–1.0 m  |   ~0.15–10 m  |  0.1–10 m***  |
-| Depth resolution @ 0.2 m                     |       ~2 mm        |     ~2 mm    |      ~0.5 mm      | ~<0.2 mm  |    ~0.04 mm  |    ~1 mm      |  ~0.2 mm***    |
-| Depth resolution @ 0.5 m                     |       ~5 mm        |     ~5 mm    |      ~2 mm        |  ~<0.5 mm |    ~0.5 mm   |    ~4 mm      |  ~1.5 mm***    |
-| Depth resolution @ 1.2 m                     |      ~15 mm        |     ~15 mm   |         -         |   ~2 mm   |     ~2 mm    |    ~15 mm     |  ~6 mm***      |
-| Typical interface                            |         USB        |       USB     |        USB       | Ethernet  |  USB / GigE  |      USB      |   Ethernet      |
-| Typical price range                          |         $$$$       |      $$$$$    |        $$        |   $$$$$$  |     $$$$$    |      $$$      |       $$$       |
+---
 
+| Feature / Focus                               |         ZED 2i         |   RealSense (e.g., D455)  |          Bumblebee X 5GigE          | Leap Motion (Controller 2) |          OptiTrack         |  Basler Stereo (stereo ace)  | Orbbec (Gemini 2) |              EdgeTrack             |
+| --------------------------------------------- | :--------------------: | :-----------------------: | :---------------------------------: | :------------------------: | :------------------------: | :--------------------------: | :---------------: | :--------------------------------: |
+| **Primary use case**                          |  Robotics / XR / Depth |       Depth sensing       |       Industrial stereo depth       |        Hand tracking       |     Marker-based MoCap     |    Industrial stereo depth   |   Depth sensing   | Editor authoring / pro interaction |
+| **Typical interface**                         |           USB          |            USB            |           5GigE (Ethernet)          |             USB            |   Ethernet (system-based)  | GigE / USB (model dependent) |        USB        |        Ethernet (multi-rig)        |
+| **Stereo depth**                              |           🟢           |             🟢            |                  🟢                 |             🔴             |             🔴             |              🟢              |         🟢        |                 🟢                 |
+| **On-device depth compute**                   |  🔴 (host GPU typical) | 🟢 (dedicated depth ASIC) |   🟢 (on-board stereo processing)   |             🔴             |             🔴             |  🟢 (camera-based disparity) |  🟢 (custom ASIC) |     🟢 (ROI-based edge compute)    |
+| **AI/VPU-style accelerator**                  |           🔴           |  🔴 (depth ASIC ≠ AI VPU) |                  🔴                 |             🔴             |             🔴             |              🔴              |         🔴        |    Optional (platform-dependent)   |
+| **FPGA-based stereo pipeline**                |           🔴           |             🔴            |  🟢 (industrial hardware pipeline)  |             🔴             |             🔴             |              🔴              |         🔴        |                 🔴                 |
+| **Open RAW sensor access**                    | 🟡 (limited SDK modes) | 🟡 (not typical workflow) | 🟢 (12-bit rectified stereo option) |             🔴             |             🟡             |              🟢              |       🔴/🟡       |                 🟢                 |
+| **Native multi-device fusion**                |           🔴           |             🔴            |                  🔴                 |             🔴             | 🟢 (system-level software) |              🔴              |         🔴        |                 🟢                 |
+| **Deterministic timing layer**                |           🔴           |             🔴            |     🟡 (industrial sync support)    |             🔴             |             🟢             |              🔴              |         🔴        |                 🟢                 |
+| **Linux-based edge OS on device**             |           🔴           |             🔴            |                  🔴                 |             🔴             |             🔴             |              🔴              |         🔴        |                 🟢                 |
+| **Open-source core**                          |           🔴           |             🔴            |                  🔴                 |             🔴             |             🔴             |              🔴              |         🔴        |                 🟢                 |
+| **Typical depth range (manufacturer stated)** |       ~0.3–20 m*       |         ~0.4–6 m*         |              ~0.3–10 m*             |          ~0.1–1 m*         |         ~0.2–20 m*         |          ~0.2–10 m*          |    ~0.15–10 m*    |             0.1–10 m**             |
 
-### Footnotes
+---
 
-\* Capture rates depend on camera selection and edge platform configuration.
-Effective update rates above 1000 Hz are achieved via **TDM phase-offset interleaving** across multiple synchronized stereo rigs (a *virtual/effective* update rate), not from a single physical camera.
+## Footnotes
 
-\** Accelerator support depends on the selected edge platform (optional NPU/GPU modules).
+* Manufacturer-stated operational ranges under ideal conditions.
+Actual performance depends on lighting, surface texture, calibration, and environmental conditions.
 
-\*** EdgeTrack is primarily optimized for **high-precision operation up to ~1.2 m** using homogeneous NIR flood illumination.
+** EdgeTrack is optimized for **high-precision operation in the near field (≤ ~1.2 m)** using homogeneous NIR flood illumination.
+Extended ranges up to ~10 m are configuration-dependent and may require:
 
-For extended range scenarios (up to ~10 m), multiple configurations are possible:
+* VCSEL dot-pattern projection (active stereo assist)
+* Increased baseline
+* Higher-power NIR flood illumination
+* Environment-dependent neural stereo refinement
 
-* Integrated **VCSEL dot-pattern modules** (active stereo assist)
-* Neural stereo without strict bandpass filtering (environment-dependent)
-* External high-power NIR flood panels
-
-Range and resolution depend on baseline, optical configuration, illumination mode, and edge processing setup.
-
-### Notes on depth range & “resolution” figures
-
-The depth range and resolution values in this table are **order-of-magnitude estimates** meant for architectural comparison.  
-In real systems, results depend heavily on optics (FOV, focus, IR filtering), surface properties, illumination power/pattern, exposure, and matching/denoise pipelines.
-
-#### OptiTrack (marker-based triangulation)
-OptiTrack is **not a stereo depth camera**. It reconstructs 3D positions by **triangulating reflective markers** across a calibrated camera array.
-With a well-designed volume (good geometry, calibration, lens choice, controlled lighting), **sub-millimeter to millimeter accuracy** is achievable.
-Because the measurement principle is different from active depth cameras (stereo/ToF/structured light), the “depth resolution” numbers are **not directly comparable**.
-
-**OptiTrack** achieves determinism through a **centralized camera array** and **proprietary synchronization hardware**. While OptiTrack offers a **“raw grayscale”** video mode, this is primarily a **Reference Mode** for monitoring/aiming rather than a stream intended for **3D reconstruction**; it is also **not fully synchronized** and typically runs at a **lower frame rate**. **EdgeTrack**, in contrast, targets determinism **at the edge** via **distributed TDM phase-offset capture** and prioritizes **uncompressed RAW10/RAW12 sensor streams** (instead of H.264/H.265 pipelines) to preserve pixel fidelity for **stable, reproducible stereo reconstruction**.
-
-#### Basler Stereo (industrial stereo)
-Basler’s industrial stereo solutions can achieve **very high precision in the near field** (e.g., ~0.04 mm at ~0.2 m under optimal conditions).
-However, **maximum precision typically comes with trade-offs**: reduced effective FPS at full depth quality, strict calibration requirements, and controlled illumination/scene texture.  
-This is why the table marks Basler as **“Low” FPS (typical)** in a conservative, market-wide comparison.
-
-#### RealSense / ZED / Orbbec (consumer/prosumer depth cameras)
-Many depth-camera vendors specify accuracy as a **percentage of distance** (a common rule-of-thumb is ~1–2% of range, depending on model and conditions).
-For that reason, the mm-values shown here are presented as **realistic ranges**, not best-case lab numbers, and should be interpreted as “what you can typically expect” rather than guaranteed performance.
-
-#### Leap Motion
-Leap Motion uses a dual-camera hardware setup; however, the system does not expose or process stereo data as a general-purpose stereo vision pipeline.
-
+Depth precision and usable range depend on baseline geometry, optics, illumination design, and processing strategy.
+For transparency, geometric performance relationships are documented separately via disparity-based calculation tools.
 
 ---
 
