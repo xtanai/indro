@@ -190,6 +190,16 @@ For these reasons, the project deliberately avoids H.265-based pipelines and foc
 
 > Note: H.265 is common for AI segmentation streams, but compression artifacts can bias models. In EdgeTrack, **geometry is the baseline**; AI is optional.
 
+### ⭐ Pixel format
+
+| Format                     |   Rating   | Comment                                                                                  |
+| -------------------------- | ---------- | ---------------------------------------------------------------------------------------- |
+| **MJPEG / JPEG**           | ⭐☆☆☆☆     | Only for preview/debug. Strong artifacts, variable bitrate, poor for precise 3D.         |
+| **YUV / YUYV / NV12**      | ⭐⭐☆☆☆    | OK if you only use the **Y (luma)** channel. Extra bandwidth wasted on color info.       |
+| **RAW8 / Y8 (8-bit mono)** | ⭐⭐⭐☆☆   | Solid baseline. Lower dynamic range, but good enough with proper NIR illumination.       |
+| **RAW10**                  | ⭐⭐⭐⭐☆  | Very good: higher dynamic range, finer quantization, still manageable bandwidth.         |
+| **RAW12**                  | ⭐⭐⭐⭐⭐ | Ideal for high precision: maximum dynamic range and depth resolution, highest bandwidth. |
+
 ---
 
 ## Interface: USB vs. Ethernet vs. WLAN
@@ -205,6 +215,33 @@ USB, Ethernet, and WLAN are all commonly used to connect cameras and tracking de
 In practice, USB is convenient for simple setups, Ethernet offers the most control and scalability for deterministic systems, and WLAN trades predictability for mobility and ease of deployment.
 
 > **Note:** For tight timing, direct NIC connections are preferred. Switches usually add small latency, but can add variability under congestion; use QoS/VLAN/PTP if deterministic timing is required.
+
+---
+
+## ⚙️ Quick Engineering Comparison — What is the best interface for deterministic vision?
+
+When designing a machine-vision or stereo system, the choice of sensor interface has a strong impact on latency, control, and system complexity.
+Below is a simplified engineering comparison:
+
+| Interface              | Additional Chips / Infra | RAW Access | Latency     | Determinism |
+| ---------------------- | ------------------------ | ---------- | ----------- | ---------- |
+| **MIPI CSI-2**         | very few                 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **USB2 (typical UVC)** | medium                   | ⭐☆☆☆☆     | ⭐⭐☆☆☆     | ⭐☆☆☆☆     |
+| **USB3 (typical UVC)** | medium                   | ⭐⭐☆☆☆    | ⭐⭐⭐☆☆   | ⭐⭐☆☆☆     |
+| **GigE / GigE Vision** | many                     | ⭐⭐⭐⭐☆  | ⭐⭐⭐☆☆   | ⭐⭐⭐⭐☆  |
+| **CoaXPress**          | heavy (framegrabber)     | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+
+### Summary
+
+**MIPI CSI-2** is typically the best choice when deterministic timing, minimal latency, and direct RAW sensor access are required. The sensor is connected almost directly to the SoC, which reduces hidden processing stages and keeps the pipeline transparent.
+
+**USB cameras** usually include additional ISP and bridge chips. They are convenient and plug-and-play, but often introduce internal processing and buffering that reduce determinism.
+
+**GigE cameras** are powerful for industrial networking and long cable distances, but typically require more intermediate logic (FPGA/ASIC, packetization, buffering), which increases system complexity.
+
+**CoaXPress** is a high-end industrial interface designed for very high bandwidth and deterministic transmission. It typically requires a dedicated frame grabber card on the host side and specialized hardware inside the camera. While it offers excellent throughput, low latency, and strong determinism, it significantly increases system cost, hardware complexity, and power requirements compared to embedded MIPI-based designs.
+
+For edge-processing architectures focused on precise timing and reproducible results, **MIPI CSI-2 provides the most transparent and controllable capture path**.
 
 ---
 
@@ -442,44 +479,6 @@ For deterministic 3D authoring, precise hand/tool interaction, and reproducible 
 
 
 
-
-
-## ⭐ Pixel format – preference
-
-| Format                     |   Rating   | Comment                                                                                  |
-| -------------------------- | ---------- | ---------------------------------------------------------------------------------------- |
-| **MJPEG / JPEG**           | ⭐☆☆☆☆     | Only for preview/debug. Strong artifacts, variable bitrate, poor for precise 3D.         |
-| **YUV / YUYV / NV12**      | ⭐⭐☆☆☆    | OK if you only use the **Y (luma)** channel. Extra bandwidth wasted on color info.       |
-| **RAW8 / Y8 (8-bit mono)** | ⭐⭐⭐☆☆   | Solid baseline. Lower dynamic range, but good enough with proper NIR illumination.       |
-| **RAW10**                  | ⭐⭐⭐⭐☆  | Very good: higher dynamic range, finer quantization, still manageable bandwidth.         |
-| **RAW12**                  | ⭐⭐⭐⭐⭐ | Ideal for high precision: maximum dynamic range and depth resolution, highest bandwidth. |
-
----
-
-## ⚙️ Quick Engineering Comparison — What is the best interface for deterministic vision?
-
-When designing a machine-vision or stereo system, the choice of sensor interface has a strong impact on latency, control, and system complexity.
-Below is a simplified engineering comparison:
-
-| Interface              | Additional Chips / Infra | RAW Access | Latency     | Determinism |
-| ---------------------- | ------------------------ | ---------- | ----------- | ---------- |
-| **MIPI CSI-2**         | very few                 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| **USB2 (typical UVC)** | medium                   | ⭐☆☆☆☆     | ⭐⭐☆☆☆     | ⭐☆☆☆☆     |
-| **USB3 (typical UVC)** | medium                   | ⭐⭐☆☆☆    | ⭐⭐⭐☆☆   | ⭐⭐☆☆☆     |
-| **GigE / GigE Vision** | many                     | ⭐⭐⭐⭐☆  | ⭐⭐⭐☆☆   | ⭐⭐⭐⭐☆  |
-| **CoaXPress**          | heavy (framegrabber)     | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-
-### Summary
-
-**MIPI CSI-2** is typically the best choice when deterministic timing, minimal latency, and direct RAW sensor access are required. The sensor is connected almost directly to the SoC, which reduces hidden processing stages and keeps the pipeline transparent.
-
-**USB cameras** usually include additional ISP and bridge chips. They are convenient and plug-and-play, but often introduce internal processing and buffering that reduce determinism.
-
-**GigE cameras** are powerful for industrial networking and long cable distances, but typically require more intermediate logic (FPGA/ASIC, packetization, buffering), which increases system complexity.
-
-**CoaXPress** is a high-end industrial interface designed for very high bandwidth and deterministic transmission. It typically requires a dedicated frame grabber card on the host side and specialized hardware inside the camera. While it offers excellent throughput, low latency, and strong determinism, it significantly increases system cost, hardware complexity, and power requirements compared to embedded MIPI-based designs.
-
-For edge-processing architectures focused on precise timing and reproducible results, **MIPI CSI-2 provides the most transparent and controllable capture path**.
 
 
 
